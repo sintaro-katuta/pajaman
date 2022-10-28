@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}{{ block.super }} メインページ {% endblock %}
+{% block content %}
+<h1>メインページ</h1>
+<li><span>{{ request.user }}さん</span></li>
+<a href="{% url 'pajamanApp:company' %}">企業分析</a>
+<a href="{% url 'pajamanApp:self' %}">自己分析</a>
+
+<a href="{% url 'pajamanApp:password_change' %}"><li>パスワード変更</li></a>
+
+<a href="{% url 'pajamanApp:logout' %}">ログアウト</a>
+{% endblock %}
