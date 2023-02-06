@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}{{ block.super }} 企業詳細 {% endblock %}
+{% block content %}
+{% for analysis in company_analysis %}
+<div class="row">
+<p class="col">最終更新日{{ analysis.updated_at }}</p>
+<!-- いいね -->
+{% if is_user_liked %}
+<button class="likebtn col" style="border: none; background: none;" value="{{ analysis.pk }}" onclick="ajax_like_js(value)">
+    <i id="likeicon" class="bi bi-hand-thumbs-up-fill"></i><span id="likecounter">{{ like_count }}</span>
+</button>
+{% else %}
+<button class="likebtn col" style="border: none; background: none;" value="{{ analysis.pk }}" onclick="ajax_like_js(value)">
+    <i id="likeicon" class="bi bi-hand-thumbs-up"></i><span id="likecounter">{{ like_count }}</span>
+</button>
+{% endif %}
+</div>
+
+<table class="table table-hover m-0">
+    <tbody>
+        <tr>
+            <th class="w-25" scope="row">企業名</th>
+            <td>{{ analysis.company }}</td>
+        </tr>
+        <tr>
+            <th scope="row">設立年</th>
+            <td>{{ analysis.establishment }}</td>
+        </tr>
+        <tr>
+            <th scope="row">所在地</th>
+            <td>{{ analysis.location }}</td>
+        </tr>
+        <tr>
+            <th scope="row">資本金</th>
+            <td class="num">{{ analysis.capital}}</td>
+        </tr>
+        <tr>
+            <th scope="row">売上高</th>
+            <td class="num">{{ analysis.sales }}</td>
+        </tr>
+        <tr>
+            <th scope="row">従業員数</th>
+            <td class="num">{{ analysis.emp_no }}</td>
+        </tr>
+        <tr>
+            <th scope="row">代表者</th>
+            <td>{{ analysis.representative }}</td>
+        </tr>
+        <tr>
+            <th scope="row">事業内容</th>
+            <td>{{ analysis.content }}</td>
+        </tr>
+        <tr>
+            <th scope="row">参考url</th>
+            <td><a href="{{ analysis.url }}" target="_blank">{{ analysis.url }}</a></td>
+        </tr>
+    </tbody>
+</table>
+{% endfor %}
+<form method="post" class="bg-theme">
+    {% csrf_token %}
+    {% for c in comment_form %}
+    <div class="form-floating input-group mt-5">
+        {{ c | add_class:'form-control w-50'}}
+        <label for="floatingTextarea">{{ c.label }}</label>
+        <input type="submit" class="btn btn-outline-primary" id="input-group-button-right">
+    </div>
+    {% endfor %}
+</form>
+{% for comment in comments %}
+    <div class="bg-theme p-2">
+        <p> <span class="h3 fw-bold">{{ comment.user }}</span>  <span class="text-muted fst-italic">{{ comment.created_at }}</span></p>
+        <p class="m-0" style="white-space: pre-wrap;">{{ comment.text }}</p>
+    </div>
+{% endfor %}
+
+{% block ajax_likejs %}
+<script type="text/javascript">
+    const num = document.querySelectorAll(".num");
+    num.forEach(function(element,index){
+        const newnum = new Intl.NumberFormat("ja-JP",{ notation: "compact"}).format(BigInt(element.innerHTML))
+        if(index == num.length-1){
+            element.innerHTML = newnum+"人";
+        }else{
+            element.innerHTML = newnum+"円";
+        }
+    });
+
+    function ajax_like_js(pk) {
+        const url = '{% url "pajamanApp:company_analysis_like" %}';
+        fetch(url, {
+            method: 'POST',
+            body: `pk=${pk}`,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded;charset: utf-8',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+        }).then(response => {
+            return response.json();
+        }).then(response => {
+            //いいね数を書き換える
+            console.log(response.like_count);
+            const counter = document.querySelector("#likecounter");
+            counter.textContent = response.like_count
+            const icon = document.querySelector("#likeicon");
+            //作成した場合は黒塗りつぶし
+            if(response.method == 'create'){
+                icon.classList.remove('bi-hand-thumbs-up');
+                icon.classList.add('bi-hand-thumbs-up-fill');
+                icon.id = 'likeicon'
+            }else{
+                icon.classList.remove('bi-hand-thumbs-up-fill');
+                icon.classList.add('bi-hand-thumbs-up');
+                icon.id = 'likeicon';
+            }
+        }).catch(error => {
+            console.log('通信に失敗しました',error);
+        });
+    }
+</script>
+{% endblock %}
+{% endblock %}

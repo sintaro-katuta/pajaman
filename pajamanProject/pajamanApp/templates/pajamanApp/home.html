@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}{{ block.super }} ホーム {% endblock %}
+{% block content %}
+
+<p class="text-center pt-3 catch">- 内定は<span class="kiseki">奇跡</span>ではなく、あなたの<span class="kiseki">軌跡 </span> -</p>
+<div class="row">
+    <div class="col p-5">
+        <div class="row p-5 sign-up-btn">
+            <a href="{% url 'pajamanApp:sign_up' %}">新規登録</a>
+        </div>
+        <div class="row p-5 login-btn">
+            <a href="{% url 'login' %}">ログイン</a>
+        </div>
+    </div>
+    <div class="col text-center">
+        <img src="{% static 'image/note.png' %}" class="img-fluid">
+        <p>就活している人へのサポートアプリ</p>
+    </div>
+</div>
+
+<div class="description text-center">
+    <p class="topic">Topic</p>
+    <img src="{% static 'image/topic.png' %}" class="topic-image img-fluid">
+</div>
+
+{% endblock %}

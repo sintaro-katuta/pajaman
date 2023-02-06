@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}{{ block.super }} 企業詳細 {% endblock %}
+{% block content %}
+
+{% if not company_analysis %}
+<h2>企業分析はまだ作成されていません</h2>
+{% endif %}
+<form action="" method="get">
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="キーワード" aria-label="Username" aria-describedby="input-group-button-right" name="keyword">
+        <select class="form-select" aria-label="Default select" name="sort">
+            <option value="establishment">設立年月日順</option>
+            <option value="capital">資本金順</option>
+            <option value="sales">売上高順</option>
+            <option value="emp_no">従業員数順</option>
+        </select>
+        <button type="submit" class="btn btn-outline-secondary" id="input-group-button-right">検索</button>
+    </div>
+</form>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for analysis in company_analysis %}
+    <div class="col">
+        <div class="card bg-light mb-3 m-2 border">
+            <div class="card-header">
+                <p class="fw-bold">{{ analysis.user }}</p>
+            </div>
+            <div class="card-body" style="cursor:pointer" onclick="detail_link('{{ analysis.pk }}')">
+                <div class="card-title">
+                    企業名：{{ analysis.company }}
+                </div>
+            </div>
+            <div class="card-footer text-muted updated_at">
+                {{ analysis.updated_at }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+<script>
+    function detail_link(company_analysis_pk){
+        location.href = `/company/analysis/${company_analysis_pk}/`
+    }
+    const updated_at_all = document.querySelectorAll(".updated_at");
+    updated_at_all.forEach(element =>{
+        const dateFrom = moment(element.innerHTML,"YYYY年MM月DD日HH:mm");
+        const elapsedDate = moment(dateFrom).locale( 'ja' ).fromNow();
+        element.innerHTML = elapsedDate;
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}{{ block.super }}| 企業分析 {% endblock %}
+{% block content %}
+<form method="get">
+    <div class="input-group">
+        <input type="text" class="form-control w-50 mx-auto" placeholder="企業を検索" aria-describedby="input-group-button-right" name="keyword">
+        <button type="submit" class="btn btn-outline-secondary" id="input-group-button-right">検索</button>
+    </div>
+</form>
+{% if not company_list %}
+<p>その企業は存在しません</p>
+{% endif %}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for company in company_list %}
+    <div class="col">
+        <div class="card m-2 border">
+            <div class="card-header">
+                {{ company.c_name }}
+            </div>
+            <div class="card-body text-center">
+                <a href="{% url 'pajamanApp:company_analysis_create' company.pk %}" class="btn btn-primary">企業分析を作成</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="col">
+        <div class="card m-2 border">
+            <div class="card-header">
+                企業を作成
+            </div>
+            <div class="card-body text-center">
+                {% for f in company_form %}
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-group mb-2">
+                        {{ f | add_class:"form-control"}}
+                        <input type="submit" class="btn btn-primary" id="input-group-button-right" value="送信">
+                      </div>
+                </form>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const params = (new URL(document.location)).searchParams;
+    const error = params.get('error');
+    if(error){
+        alert(error);
+    }
+</script>
+{% endblock %}

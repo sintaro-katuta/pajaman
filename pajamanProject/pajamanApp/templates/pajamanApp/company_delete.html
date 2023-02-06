@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}{{ block.super }} 企業分析 {% endblock %}
+{% block content %}
+<h1>本当に削除しますか?</h1>
+<form method="post">
+  {% csrf_token %}
+  <input type="submit" class="btn btn-danger" value="削除">
+  <a href="{% url 'pajamanApp:company_analysis' %} ">キャンセル</a>
+</form>
+{% endblock %}

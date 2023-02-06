@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}{{ block.super }} 自己分析 {% endblock %}
+{% block content %}
+<h1>自己分析</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">質問</th>
+            <th scope="col">あなたの回答</th>
+            <th scope="col">性格</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for s in self %}
+        <tr>
+            <th>{{ s.question.q_id }}</th>
+            <th>{{ s.question }}</th>
+            <td>{{ s.answer }}</td>
+            <td class="personality">{{ s.answer.personality }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<strong><p id="check" class="text-center text-black-50"></p></strong>
+<p id="text" class="text-center text-black-50"></p>
+<canvas id="chart"></canvas>
+<script>
+    const personality = document.querySelectorAll(".personality");
+    let openness = 0;
+    let integrity = 0;
+    let extroversion = 0;
+    let harmonization = 0;
+    let neuroticism = 0;
+    personality.forEach(element =>{
+        if(element.innerHTML === "開放性"){
+            openness++;
+        }
+        if(element.innerHTML === "誠実性"){
+            integrity++;
+        }
+        if(element.innerHTML === "外向性"){
+            extroversion++;
+        }
+        if(element.innerHTML === "協調性"){
+            harmonization++;
+        }
+        if(element.innerHTML === "神経症的傾向"){
+            neuroticism++;
+        }
+    });
+    const ctx = document.querySelector("#chart");
+    const chart = new Chart(ctx,{
+        type: 'radar',
+        data: {
+            labels: ["開放性","誠実性","外向性","協調性","神経症的傾向"],
+            datasets: [{
+                data: [openness,integrity,extroversion,harmonization,neuroticism],
+                label: "あなたの性格"
+            }]
+        },
+    });
+    const che = document.querySelector("#check");
+    const text = document.querySelector("#text");
+    let max = 0;
+    let personal = [{name:"あけっぴろげ",score:openness,text:"この因子が高い人は、知的好奇心が高く、想像力が豊かで、芸術的な関心が高いとされています。"},
+                    {name:"誠実性",score:integrity,text:"この因子が高いと、真面目で良心があり、達成力があるとされています。完璧主義者もこの因子が高くなると言われています。"},
+                    {name:"外向性",score:extroversion,text:"この因子の強弱によって、他者との関わりを好むタイプか、一人の時間や内省に時間を使うタイプかが分かれます。"},
+                    {name:"協調性",score:harmonization,text:"この因子が高いと、思いやりがあり、貢献することを好み、対立を避ける傾向が高くなります。"},
+                    {name:"神経症的傾向",score:neuroticism,text:"この因子が高いと、緊張やストレスの多い状況で、精神的・身体的に影響を受けやすいタイプとされています。"}];
+    personal.sort((a,b)=>{
+        if(a.score > b.score)return -1;
+        else if(a.score < b.score)return 1;
+        return 0
+    })
+    che.innerHTML = "あなたの性格は"+personal[0].name+"です";
+    text.innerHTML = personal[0].text;
+
+</script>
+{% endblock %}

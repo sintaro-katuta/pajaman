@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}{{ block.super }}| 企業名作成{% endblock %}
+{% block content %}
+<form method="POST">
+  {% csrf_token %}
+  <div class="row">
+    <h1 class="col">
+      {% if not form.instance.pk %}
+      {{ company }}の企業分析を作成
+      {% else %}
+      {{ company }}の企業分析を変更
+      {% endif %}
+    </h1>
+  </div>
+  {% for f in form %}
+  <div class="input-group">
+    <span class="input-group-text w-25 m-0" id="input-group-left-example">{{ f.label }}</span>
+    {{ f | add_class:'form-control'}}
+  </div>
+  {% endfor %}
+  {% if not form.instance.pk %}
+  <input type="submit" class='btn btn-primary w-100 mt-3' value="作成">
+  {% else %}
+  <input type="submit" class='btn btn-primary w-100 mt-3' value="更新">
+  {% endif %}
+</form>
+{% endblock %}

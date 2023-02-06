@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}{{ block.super }}質問作成フォーム{% endblock %}
+{% block content %}
+<h1>
+  {% if not form.instance.pk %}
+  質問を作成
+  {% else %}
+  質問を変更
+  {% endif %}
+</h1>
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  {% if not form.instance.pk %}
+  <input type="submit" class='btn btn-primary' value="作成">
+  {% else %}
+  <input type="submit" class='btn btn-primary' value="更新">
+  {% endif %}
+</form>
+{% endblock %}

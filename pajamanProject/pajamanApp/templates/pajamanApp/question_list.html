@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}{{ block.super }} 自己分析 {% endblock %}
+{% block content %}
+<h1>自己分析</h1>
+<a href="{% url 'pajamanApp:self_create' %}">新規作成</a>
+<table class="table">
+    <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">q_id</th>
+          <th scope="col">category_id</th>
+          <th scope="col">question</th>
+          <th scope="col">update</th>
+          <th scope="col">delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for question in question_list %}
+        <tr>
+            <th>{{ question.q_id }}</th>
+            <td>{{ question.q_id }}</td>
+            <td>{{ question.category_id }}</td>
+            <td>{{ question.question }}</td>
+            <td><a href="{% url 'pajamanApp:self_update' question.pk %}">変更する</a></td>
+            <td><a href="{% url 'pajamanApp:self_delete' question.pk %}">削除する</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

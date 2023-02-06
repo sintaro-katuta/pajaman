@@ -1,0 +1,176 @@
+{% load static %}
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="ja">
+
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link	rel="stylesheet"	href="{% static 'css/base.css' %}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.js"></script>
+<script src="{% static 'js/moment-with-locales.min.js' %}"></script>
+
+
+<title>{% block title %} anasis {% endblock %}</title>
+
+<header>
+  {% if request.user.is_authenticated %}
+  <nav class="navbar nav-fill navbar-expand-lg navbar-light bg-dark-theme font-theme fw-bold">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'pajamanApp:main' %}">anasis</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              企業分析
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
+              <li class="pl-3"><a class="dropdown-item fw-bold" href="{% url 'pajamanApp:company' %}">企業分析を作成</a></li>
+              <li><a class="dropdown-item fw-bold" href="{% url 'pajamanApp:company_analysis_list'%}">企業分析を閲覧</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/self/1/">自己分析</a>
+          </li>
+          
+        </ul>
+        <div class="row bg-dark-theme">
+          <button id="js-hamburger" class="col" style="background: none; border: none;">
+          <small class="text-center col">{{ user.username }}</small><br>
+            {% if icon %}
+            <img src="/media/{{ icon.image }}" class="rounded-circle" style="width:50px; height:50px;">
+            {% else %}
+            <img src="/media/icon/icon.png" class="rounded-circle border" style="width:50px; height:50px;">
+            {% endif %}
+          </button>
+          <div class="col m-auto" style="text-align: center;">
+            <small class="text-center text-danger col" style="font-size: 8px;">ログアウト</small><br>
+            <a class="logout btn btn-danger rounded-circle p-0 m-auto text-center" href="{% url 'pajamanApp:logout' %}" style="width:50px; height:50px;">
+              <i class="logout-icon bi bi-box-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+        <div id="nav-wrapper" class="nav-wrapper">
+          <div class="black-bg" id="js-black-bg"></div>
+          <nav class="sp-nav bg-theme">
+            <a class="ps-2 pb-3" href="{% url 'pajamanApp:password_change' %}">パスワード変更</a><br>
+            <a class="ps-2 pb-3" href="{% url 'pajamanApp:company_analysis' %}">My企業分析</a><br>
+            <a class="ps-2 pb-3" href="{% url 'pajamanApp:self_list' %}">My自己分析</a><br>
+            <a class="ps-2 pb-3" href="{% url 'pajamanApp:company' %}"></a>
+            <form action="{% url 'pajamanApp:image-upload' %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <p class="m-0">アイコンを変更</p>
+              <div class="input-group">
+                <input type="file" id="img-upload" class="form-control" name="img-upload">
+                <button type="submit" id="input-group-button-right">送信</button>
+              </div>
+            </form>
+          </nav>
+         </div>
+      </div>
+    </div>
+  </nav>
+  {% else %}
+  <nav class="navbar navbar-expand-lg navbar-light bg-dark-theme font-theme">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'pajamanApp:home' %}">anasis</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'pajamanApp:sign_up' %}">新規登録</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">ログイン</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  {% endif %}
+</header>
+
+<body>
+    <div id="main">
+        {% block content %}
+        {% endblock%}
+    </div>
+    
+    <script>
+      const company_analysis = document.querySelector('#company-analysis');
+      const self_analysis = document.querySelector('#self-analysis');
+      const logout = document.querySelector('#logout');
+      const sign_up = document.querySelector('#sign_up');
+      const login = document.querySelector('#login');
+
+      
+
+      if(company_analysis !== null){
+        company_analysis.addEventListener('mouseover', () => {
+        company_analysis.style.opacity = 0.5;
+      });
+      company_analysis.addEventListener('mouseleave', () => {
+        company_analysis.style.opacity = 1;
+      });
+      }
+
+      if(self_analysis !== null){
+        self_analysis.addEventListener('mouseover', () => {
+        self_analysis.style.opacity = 0.5;
+      });
+      self_analysis.addEventListener('mouseleave', () => {
+        self_analysis.style.opacity = 1;
+      });
+      }
+
+      if(logout !== null){
+        logout.addEventListener("mouseover", () => {
+        logout.style.opacity = 0.5;
+      });
+      logout.addEventListener("mouseleave", () => {
+        logout.style.opacity = 1;
+      });
+      }
+
+      if(sign_up !== null){
+        sign_up.addEventListener("mouseover", () => {
+          sign_up.style.opacity = 0.5;
+        });
+        sign_up.addEventListener("mouseleave", () => {
+          sign_up.style.opacity = 1;
+        });
+      }
+      
+      if(login !== null){
+        login.addEventListener("mouseover", () => {
+        login.style.opacity = 0.5;
+      });
+      login.addEventListener("mouseleave", () => {
+        login.style.opacity = 1;
+      });
+      }
+
+
+    window.onload = function () {
+      var nav = document.getElementById('nav-wrapper');
+      var hamburger = document.getElementById('js-hamburger');
+      var blackBg = document.getElementById('js-black-bg');
+
+      hamburger.addEventListener('click', function () {
+          nav.classList.toggle('open');
+      });
+      blackBg.addEventListener('click', function () {
+          nav.classList.remove('open');
+      });
+    };
+    </script>
+</body>
+</html>

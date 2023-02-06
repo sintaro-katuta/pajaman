@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}{{ block.super }} 質問 {% endblock %}
+{% block content %}
+<div class="table">
+  <h2>あなたの性格についての質問を開始します</h2>
+  {{ question }}
+  <form method="post">
+    {% csrf_token %}
+    <div class="row">
+      {% for a in answer %}
+        <button id="answer" class="btn border col" name="answer" value="{{ a.id }}">{{ a }}</button>
+      {% endfor %}
+    </div>
+  </form>
+  {% endblock %}

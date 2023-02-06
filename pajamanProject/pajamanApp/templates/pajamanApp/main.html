@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}{{ block.super }} メインページ {% endblock %}
+{% block content %}
+<h4 class="center">ようこそ！{{ user.username }}さん</h4>
+
+<!-- 企業分析・自己分析のボタン -->
+<div class="main-text">
+    <div class="rigth">
+        <a type="button" class="main-button" href="{% url 'pajamanApp:company' %}">企業分析を作成</a>
+    </div>
+    <div class="left">
+            <a type="button" class="main-button" href="/self/1">自己分析の作成</a>
+    </div>
+</div>
+
+<div class="card-group">
+    {% for analysis in company_analysis %}
+        <div class="main-card">
+            <!-- 企業名 -->
+            <div class="company-name" style="cursor:pointer" onclick="detail_link('{{ analysis.pk }}')">
+                <div class="fw-bold">
+                    企業名：{{ analysis.company }}
+                </div>
+            </div>
+            <!-- 作成者 -->
+            <div class="name">
+                <p class="fw-bold">作成者：{{ analysis.user }}</p>
+            </div>
+            <!-- 日付 -->
+            <div class="updated_at">
+                {{ analysis.updated_at }}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+
+
+<script>
+    function detail_link(company_analysis_pk){
+        location.href = `/company/analysis/${company_analysis_pk}/`
+    }
+    const updated_at_all = document.querySelectorAll(".updated_at");
+    updated_at_all.forEach(element =>{
+        const dateFrom = moment(element.innerHTML,"YYYY年MM月DD日HH:mm");
+        const elapsedDate = moment(dateFrom).locale( 'ja' ).fromNow();
+        element.innerHTML = elapsedDate;
+    });
+</script>
+
+{% endblock %}

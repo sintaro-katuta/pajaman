@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}{{ block.super }} 企業分析 {% endblock %}
+{% block content %}
+<h1>{{ request.user }}の企業分析</h1>
+<form action="" method="get">
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="キーワード" aria-label="Username" aria-describedby="input-group-button-right" name="keyword">
+        <select class="form-select" aria-label="Default select" name="sort">
+            <option value="establishment">設立年月日順</option>
+            <option value="capital">資本金順</option>
+            <option value="sales">売上高順</option>
+            <option value="emp_no">従業員数順</option>
+          </select>
+        <button type="submit" class="btn btn-outline-secondary" id="input-group-button-right">検索</button>
+    </div>
+</form>
+<table class="table table-hover mb-5">
+    <thead>
+        <th scope="col">企業名</th>
+        <th scope="col">作成日</th>
+        <th scope="col">更新日</th>
+        <th></th>
+        <th></th>
+    </thead>
+    <tbody>
+        {% for analysis in company_analysis %}
+        <tr style="cursor:pointer" onclick="detail_link('{{ analysis.pk }}')">
+            <td scope="row">{{ analysis.company }}</td>
+            <td scope="row">{{ analysis.created_at }}</td>
+            <td scope="row">{{ analysis.updated_at }}</td>
+            <td scope="row"><a class="btn btn-primary" href="{% url 'pajamanApp:company_analysis_update' analysis.pk %}">更新</a></td>
+            <td scope="row"><a class="btn btn-danger" href="{% url 'pajamanApp:company_analysis_delete' analysis.pk %}">削除</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script>
+    function detail_link(company_analysis_pk){
+        location.href = `/company/analysis/${company_analysis_pk}/`
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% load static %}
+{% load widget_tweaks %}
+<form method="post">
+    <div class="card w-75 mx-auto">
+        <div class="card-header">
+            {{ submit_label }}
+        </div>
+        <div class="card-body">
+            {% csrf_token %}
+            <div class="col-xs-2">
+                {% for error in form.non_field_errors %}
+                    <p class="errorlist">{{ error }}</p>
+                {% endfor %}
+                {% for f in form %}
+                    <p class="text-center card-title"><label>{{ f.label }}</label></p>
+                    <p class="text-center">{{ f | add_class:"w-75" }}</p>
+                    <p class="text-center errorlist">{{ f.errors.as_text }}</p>
+                {% endfor %}
+            </div>   
+            {% if submit_label == "ログイン" %} 
+                <p class="text-center"><a href="{% url 'password_reset' %}">パスワード再発行</a></p>
+            {% endif %}
+            {% if not request.user.is_authenticated %} 
+                <div class="social-login">
+                    <p class="text-center">
+                        <a href="{% url 'social:begin' 'google-oauth2' %}"><img src="{% static 'image/btn_google_signin_dark_normal_web.png' %}" alt="Sign in with Google"></a>
+                    </p>
+                </div>
+            {% endif %}
+            <p class="text-center pt-3">
+                <input type="submit" value="{{ submit_label }}" class="btn btn-outline-primary w-75 px-auto"/>
+            </p>
+        </div>
+    </div>
+</form>
+

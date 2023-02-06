@@ -1,0 +1,387 @@
+/* フォント */
+@import url('https://fonts.googleapis.com/css2?family=IBM Plex Mono&display=block');
+@import url('https://fonts.googleapis.com/css2?family=M PLUS Rounded 1c&display=block');
+@import url('https://fonts.googleapis.com/earlyaccess/sawarabimincho.css');
+
+/* base.html */
+
+/* 背景色 */
+
+.bg-theme {
+  background:#fcf4ec;
+}
+.bg-dark-theme {
+  background: #e9dbd3;
+}
+html,body,.table,#main{
+  background:#fcf4ec;
+}
+/* フォント */
+.font-theme{
+  font-family: 'IBM Plex Mono', cursive;
+  color: #333;
+}
+.font-title{
+  font-family: 'IBM Plex Mono', cursive;
+}
+
+*{
+  font-family:'M PLUS Rounded 1c', sans-serif;
+}
+
+/* キャッチコピー */
+
+.catch{
+  font-size: 35px;
+  color: #333;
+  animation: fadein 2s forwards;
+  transform:translateX(100%);
+  font-family: 'Sawarabi Mincho';
+}
+
+.kiseki{font-size: 45px;
+  /* color: (45deg, #B67B03 0%, #DAAF08 45%, #FEE9A0 70%, #DAAF08 85%, #B67B03 90% 100%); */
+  display: inline-block;
+  background: linear-gradient(90deg, #4158D0, #C850C0 30%, #FFCC70);
+  background: -webkit-linear-gradient(0deg, #4158D0, #C850C0 30%, #FFCC70);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: 'Sawarabi Mincho';
+  -webkit-text-stroke: 0.5px #000;
+}
+
+/* _form.html */
+
+.errorlist{
+  color: #f00;
+  font-size: small;
+  text-align: center;
+}
+
+
+@keyframes fadein {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+/*---------------------新規登録・ログイン--------------------*/
+.sign-up-btn a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  padding: 1em 2em;
+  width: 300px;
+  color: #333;
+  font-size: 18px;
+  font-weight: 700;
+  background-color: #e9dbd3;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.sign-up-btn a::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-top: 3px solid #333333;
+  border-right: 3px solid #333333;
+  transform: rotate(45deg);
+}
+
+.sign-up-btn a:hover {
+  text-decoration: none;
+  background-color: #cab1a3;
+  color: #333;
+}
+
+.login-btn a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  padding: 1em 2em;
+  width: 300px;
+  color: #333;
+  font-size: 18px;
+  font-weight: 700;
+  background-color: #e9dbd3;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.login-btn a::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-top: 3px solid #333333;
+  border-right: 3px solid #333333;
+  transform: rotate(45deg);
+}
+
+.login-btn a:hover {
+  text-decoration: none;
+  background-color: #cab1a3;
+  color: #333;
+}
+
+.submit-btn input {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  padding: 1em 2em;
+  width: 300px;
+  color: #333;
+  font-size: 18px;
+  font-weight: 700;
+  background-color: #e2d1c8;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.submit-btn input::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-top: 3px solid #333333;
+  border-right: 3px solid #333333;
+  transform: rotate(45deg);
+}
+
+.submit-btn input:hover {
+  text-decoration: none;
+  background-color: #cab1a3;
+  color: #333;
+}
+
+@media screen and (min-width: 990px) { /*ウィンドウ幅が990px以上の場合に適用*/
+  .logout-icon {
+    position: absolute;
+    top: 50%;
+    right: 2.3%;
+  }
+}
+@media screen and (max-width: 990px) { /*ウィンドウ幅が990px以下の場合に適用*/
+  .logout-icon {
+    position: absolute;
+    top: 77%;
+    right: 23.5%;
+  }
+}
+
+@media screen and (max-width: 479px) { /*ウィンドウ幅が479px以下までの場合に適用*/
+  .logout-icon {
+    position: absolute;
+    top: 79%;
+    right: 22.5%;
+  }
+}
+
+/*トピック*/
+
+.topic{
+  font-size: 3rem;
+}
+
+.hamburger {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 50px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 300;
+}
+
+.hamburger__line {
+  position: absolute;
+  width: 50px;
+  height: 3px;
+  right: 0;
+  background-color: #000;
+  transition: all 0.5s;
+}
+
+.hamburger__line--1 {
+  top: 1px;
+}
+
+.hamburger__line--2 {
+  top: 18px;
+}
+
+.hamburger__line--3 {
+  top: 36px;
+}
+
+/*ハンバーガーがクリックされたら*/
+.open .hamburger__line--1 {
+  transform: rotate(-45deg);
+  top: 11px;
+}
+
+.open .hamburger__line--2 {
+  opacity: 0;
+}
+
+.open .hamburger__line--3 {
+  transform: rotate(45deg);
+  top: 11px;
+}
+
+/* 
+sp-nav(ナビ)
+=================================== */
+.sp-nav {
+  position: fixed;
+  right: -100%; /*ハンバーガーがクリックされる前はWindow右側に隠す*/
+  top: 12.5%;
+  width: 30%; /* 出てくるスライドメニューの幅 */
+  height: 50vh;
+  transition: all 0.5s;
+  z-index: 200;
+  border: 1px solid black;
+  overflow-y: auto; /* メニューが多くなったらスクロールできるように */
+}
+
+@media screen and (max-width: 479px) {
+  .sp-nav{
+    position: fixed;
+    right: -100%; /*ハンバーガーがクリックされる前はWindow右側に隠す*/
+    top: 12.5%;
+    width: 100%; /* 出てくるスライドメニューの幅 */
+    height: 50vh;
+    transition: all 0.5s;
+    z-index: 200;
+    border: 1px solid black;
+    overflow-y: auto; /* メニューが多くなったらスクロールできるように */
+  }
+}
+
+.sp-nav a {
+  color: gray;
+  text-decoration: none;
+}
+
+.sp-nav a:hover {
+  color: black;
+  text-decoration: none;
+}
+
+/*ハンバーガーがクリックされたら右からスライド*/
+.open .sp-nav {
+  right: 0;
+}
+
+/* 
+black-bg(ハンバーガーメニュー解除用bg)
+=================================== */
+.black-bg {
+  background-color: #000;
+  cursor: pointer;
+  height: 100vh;
+  left: 0;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  transition: all 0.6s;
+  visibility: hidden;
+  width: 100vw;
+  z-index: 1;
+}
+
+/*ハンバーガーメニューが開いたら表示*/
+.open .black-bg {
+  opacity: 0;
+  visibility: visible;
+}
+
+/* メインのいろいろ */
+.center{
+  text-align: center;
+  padding-top: 1em;
+  padding-bottom: 0.5em;
+  font-size: 30px;
+}
+
+/* メインボタン */
+.main-text{
+  width: 400px;
+  display: flex;
+  margin: auto;
+}
+/* 左寄せ */
+.left{
+  margin-left:auto
+}
+/* 右寄せ */
+.rigth{
+  margin-right:auto
+}
+/* ボタンの見た目 */
+.main-button{
+  font-size: 20px;
+  display: inline-block;
+  padding: 0.5em 1em 0.3em;
+  color: #ffffff;
+  border-radius: 25px;
+  background-color: #45728c;
+  border: 2px solid #45728c;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.5s;
+  }
+.main-button:hover{
+  background-color: #fcf4ec;
+  border-color: #45728c;
+  color: #45728c;
+}
+
+.card-group{
+  width: 80%;
+  margin:auto;
+}
+
+.main-card {
+  width: 30em;
+  padding: 0em 0.5em 3em 0.5em; 
+  margin: 2em auto 2em auto;
+  color: #000000;
+  background: #ffffff;
+  border-left: solid 10px #45728c;
+  transition: background-color 0.5s;
+}
+.main-card:hover{
+  background-color: #45728c83;
+  color: #ffffff;
+}
+
+.company-name{
+  padding-top: 3em;
+  padding-bottom:2em;
+  font-size: 20px;
+}
+
+.input-group{
+  text-align: center;
+  padding-top: 1em;
+  padding-bottom: 0.5em;
+
+}
+#chart{
+  margin: auto;
+  width: 40%;
+  height: 40%;
+}
